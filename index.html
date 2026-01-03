@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính tiền đặt hàng hộ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            margin: 0;
+            padding: 12px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            margin: 10px;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        select, input, button {
+            width: 100%;
+            margin-top: 6px;
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        input {
+            text-align: center;
+        }
+        button {
+            margin-top: 18px;
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+            border: none;
+        }
+        button:active {
+            opacity: 0.9;
+        }
+        .result {
+            margin-top: 16px;
+            background: #eef5ff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .note {
+            margin-top: 14px;
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        @media (max-width: 360px) {
+            h2 { font-size: 18px; }
+            select, input, button { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Tính tiền đặt hàng hộ</h2>
+
+        <label>Chọn mã giảm giá</label>
+        <select id="deal">
+            <option value="1">Mã 60k cho mọi đơn (Công 25k)</option>
+            <option value="2">Mã 80k cho mọi đơn (Công 35k)</option>
+            <option value="3">Mã 100k cho mọi đơn (Công 45k)</option>
+            <option value="4">Mã 50% tối đa 100k cho mọi đơn (Công 38k)</option>
+            <option value="5">Mã 50% tối đa 200k cho mọi đơn (Công 65k)</option>
+        </select>
+
+        <label>Giá gốc sản phẩm (VNĐ)</label>
+        <input type="text" id="price" placeholder="Ví dụ: 398.000" oninput="formatNumber(this)">
+
+        <button onclick="calculate()">Tính tiền</button>
+
+        <div class="result" id="result"></div>
+
+        <div class="note">
+            <b>Lưu ý:</b><br>
+            1. Được ghép tối đa 2 link / 1 đơn, trong 1 link tối đa 3 phân loại.<br>
+            2. Không mua hàng <b>Shopee Xử Lý</b>.<br>
+            3. Không mua hàng shop kém uy tín.
+        </div>
+    </div>
+
+    <script>
+        function formatNumber(input) {
+            let value = input.value.replace(/\D/g, "");
+            if (value === "") {
+                input.value = "";
+                return;
+            }
+            input.value = Number(value).toLocaleString('vi-VN');
+        }
+
+        function calculate() {
+            const deal = document.getElementById("deal").value;
+            const raw = document.getElementById("price").value.replace(/\./g, "");
+            const price = Number(raw);
+
+            if (!price || price <= 0) {
+                document.getElementById("result").innerHTML = "Vui lòng nhập giá hợp lệ";
+                return;
+            }
+
+            let discount = 0;
+            let fee = 0;
+
+            switch (deal) {
+                case "1":
+                    discount = 60000;
+                    fee = 25000;
+                    break;
+                case "2":
+                    discount = 80000;
+                    fee = 35000;
+                    break;
+                case "3":
+                    discount = 100000;
+                    fee = 45000;
+                    break;
+                case "4":
+                    discount = Math.min(price * 0.5, 100000);
+                    fee = 38000;
+                    break;
+                case "5":
+                    discount = Math.min(price * 0.5, 200000);
+                    fee = 65000;
+                    break;
+            }
+
+            if (discount > price) discount = price;
+
+            const finalPrice = price - discount + fee;
+
+            document.getElementById("result").innerHTML = `
+                <b>Giá sau khi áp mã:</b> ${(price - discount).toLocaleString('vi-VN')} đ<br>
+                <b>Tiền công:</b> ${fee.toLocaleString('vi-VN')} đ<br>
+                <b>Tổng tiền phải trả:</b> ${finalPrice.toLocaleString('vi-VN')} đ
+            `;
+        }
+    </script>
+</body>
+</html>
