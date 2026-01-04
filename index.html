@@ -90,7 +90,7 @@
             <option value="1">Mã 60k cho mọi đơn (Công 25k)</option>
             <option value="2">Mã 80k cho mọi đơn (Công 35k)</option>
             <option value="3">Mã 100k cho mọi đơn (Công 45k)</option>
-            <option value="4">Mã 50% tối đa 100k cho mọi đơn (Công 38k)</option>
+            <option value="4">Mã 50% tối đa 100k cho mọi đơn (Công 35k)</option>
             <option value="5">Mã 50% tối đa 200k cho mọi đơn (Công 65k)</option>
         </select>
 
@@ -105,7 +105,8 @@
             <b>Lưu ý:</b><br>
             1. Được ghép tối đa 2 link / 1 đơn, trong 1 link tối đa 3 phân loại.<br>
             2. Không mua hàng <b>Shopee Xử Lý</b>.<br>
-            3. Không mua hàng shop kém uy tín.
+            3. Không mua hàng shop kém uy tín.<br>
+            4. Giá gốc bạn điền là giá sản phẩm <b>KHÔNG áp mã giảm giá của Shopee</b> (được chọn mã shop nếu có), và là <b>tổng giá của tất cả sản phẩm</b> bạn cần mua hàng (nếu đơn có 2 link, hoặc 1 link có ≥2 phân loại).
         </div>
     </div>
 
@@ -147,7 +148,7 @@
                     break;
                 case "4":
                     discount = Math.min(price * 0.5, 100000);
-                    fee = 38000;
+                    fee = 35000;
                     break;
                 case "5":
                     discount = Math.min(price * 0.5, 200000);
